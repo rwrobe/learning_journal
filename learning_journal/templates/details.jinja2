@@ -1,0 +1,17 @@
+{% extends "layout.jinja2" %}
+{% block body %}
+<div class="jumbotron list-page">
+    <h1>{{ entry.title }}</h1>
+</div>
+
+<section id="content">
+
+    <article>
+    <p class="horizontal-rule">{{ entry.body }}</p>
+    <p><span class="datetime">Created <time>{{ entry.created.strftime('%b %d, %Y') }}</time></span></p>
+    </article>
+    <p class="centered"><a href="{{ request.route_url('action', action='edit', _query=(('id',entry.id),)) }}" class="button">Edit Entry</a></p>
+    <p><a href="{{ request.route_url('home') }}">&lt;Go Back</a></p>
+
+</section>
+{% endblock %}

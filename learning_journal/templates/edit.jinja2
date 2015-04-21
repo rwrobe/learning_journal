@@ -1,0 +1,25 @@
+{% extends "templates/layout.jinja2" %}
+{% block body %}
+    <div class="jumbotron list-page">
+        <h1>Editting Journal Entry</h1>
+    </div>
+
+<section id="content">
+
+    <form action="" method="POST">
+    {% for field in form %}
+      {% if field.errors %}
+        <ul>
+        {% for error in field.errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+        <p class="label">{{ field.label }}</p>
+        <p class="field">{{ field }}</p>
+    {% endfor %}
+        <p class="centered"><input type="submit" name="submit" value="Submit" /><a href="{{ request.route_url('home') }}" class="button">Cancel</a></p>
+    </form>
+
+</section>
+{% endblock %}

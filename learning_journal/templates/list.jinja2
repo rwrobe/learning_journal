@@ -1,0 +1,42 @@
+{% extends "layout.jinja2" %}
+{% block body %}
+    <div class="jumbotron list-page">
+        <h1>Recent Entries</h1>
+    </div>
+
+    {% if login_form %}
+    <aside><form action="{{ request.route_url('auth', action='in') }}" method="POST">
+      {% for field in login_form %}
+        {% if field.errors %}
+          <ul>{% for error in field.errors %}
+            <li>{{ error }}</li>
+          {% endfor %}</ul>
+        {% endif %}
+          <p>{{ field.label }}: {{ field }}</p>
+      {% endfor %}
+      <p><input type="submit" name="Log In" value="Log In"/></p>
+    </form></aside>
+    {% endif %}
+
+    <section id="content">
+
+        <h2>Entries</h2>
+
+        {%  if entries %}
+        <ul class="entry-list">
+        {% for entry in entries %}
+            <li><p><a href="{{ request.route_url('detail',id=entry.id) }}">{{ entry.title }}</a>{%  if (entry.created.strftime('%b %d, %Y at %H:%M') != entry.edited.strftime('%b %d, %Y at %H:%M')) %}
+                <time><del>{{  entry.created.strftime('%b %d, %Y') }}</del></time><span>Edited:</span><time class="edited">{{ entry.edited.strftime('%b %d, %Y at %H:%M') }}</time>
+            {%  endif %}{%  if (entry.created.strftime('%b %d, %Y at %H:%M') == entry.edited.strftime('%b %d, %Y at %H:%M')) %}
+                <time>{{  entry.created.strftime('%b %d, %Y') }}</time>
+            {%  endif %}</p></li>
+        {%  endfor %}
+        </ul>
+        {%  else %}
+        <p>No entries in the journal</p>
+        {%  endif %}
+
+        <p class="centered"><a href="{{ request.route_url('action', action='create') }}" class="button">New Entry</a></p>
+
+    </section>
+{% endblock %}
