@@ -18,6 +18,8 @@
     </form></aside>
     {% endif %}
 
+    {% if not login_form %}
+
     <section id="content">
 
         <h2>Entries</h2>
@@ -39,4 +41,6 @@
         <p class="centered"><a href="{{ request.route_url('action', action='create') }}" class="button">New Entry</a></p>
 
     </section>
+
+    {% endif %}
 {% endblock %}

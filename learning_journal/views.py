@@ -4,7 +4,9 @@ from pyramid.view import view_config
 from pyramid.security import forget, remember, authenticated_userid
 from .forms import LoginForm
 from .models import User
+from jinja2 import Markup
 
+import markdown
 import datetime
 
 from sqlalchemy.exc import DBAPIError
@@ -19,6 +21,10 @@ from .forms import (
     EntryCreateForm,
     EntryEditForm,
 )
+
+def render_markdown(content):
+    output = Markup(markdown.markdown(content))
+    return output
 
 @view_config(route_name='home', renderer='templates/list.jinja2')
 def index_page(request):
@@ -36,7 +42,8 @@ def view(request):
     if not entry:
         return HTTPNotFound()
 
-    return { 'entry': entry }
+    logged_in = authenticated_userid(request)
+    return {'entry': entry, 'logged_in': logged_in}
 
 @view_config(route_name='action', match_param='action=create', renderer='templates/edit.jinja2', permission='create')
 def create(request):
@@ -68,7 +75,8 @@ def update(request):
     return {'form': form, 'action': request.matchdict.get('action')}
 
 @view_config(route_name='auth', match_param='action=in', renderer='string', request_method='POST')
-def sign_in(request):
+@view_config(route_name='auth', match_param='action=out', renderer='string')
+def sign_in_out(request):
     login_form = None
     if request.method == 'POST':
         login_form = LoginForm(request.POST)

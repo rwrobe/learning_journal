@@ -401,6 +401,14 @@ main article h3{margin-top:0}
 main article .entry_body{
     margin:0.5em}
 main aside{float:right}
+main > aside {
+  float: none;
+  max-width: 350px;
+  margin: 4em auto;
+}
+main > aside input[type="submit"] {
+    margin: 0;
+}
 main aside .field{
     margin-bottom:1em}
 main aside .field input,
